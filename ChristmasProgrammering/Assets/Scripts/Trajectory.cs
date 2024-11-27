@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 public class Trajectory : MonoBehaviour
 {
     public LineRenderer lineRenderer;
+    public Transform hitMarker;
+
+    RaycastHit hit;
 
     public void PredictTrajectory(Vector3 velocity, Vector3 position, int maxPoints)
     {
@@ -15,8 +19,9 @@ public class Trajectory : MonoBehaviour
             velocity = CalculateNewVelocity(velocity, 0.03f);
             Vector3 nextPosition = position + velocity * 0.03f;
 
-            if (nextPosition.magnitude > 30)
+            if (Physics.Raycast(position, nextPosition, out hit, (nextPosition-position).magnitude))
             {
+                MoveHitMarker(hit);
                 break;
             }
 
@@ -35,4 +40,15 @@ public class Trajectory : MonoBehaviour
         lineRenderer.positionCount = maxPoints;
         lineRenderer.SetPosition(point, pointPos);
     }
+
+    private void MoveHitMarker(RaycastHit hit)
+    {
+        hitMarker.gameObject.SetActive(true);
+
+        // Offset marker from surface
+        float offset = 0.025f;
+        hitMarker.position = hit.point + hit.normal * offset;
+       // hitMarker.rotation = Quaternion.Euler(hit.normal);
+    }
+
 }
