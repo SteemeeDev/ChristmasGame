@@ -13,20 +13,26 @@ public class Shoot : MonoBehaviour
     [SerializeField] GameObject grabHitBox;
     [SerializeField] GameObject ballPrefab;
     [SerializeField] Transform shootPoint;
+    [SerializeField] Transform shooter;
 
     [SerializeField] GameObject wireGrab1;
     [SerializeField] GameObject wireGrab2;
     [SerializeField] GameObject wireGrab3;
+    [SerializeField] Transform end1;
+    [SerializeField] Transform end2;
+
     [SerializeField] LineRenderer wire;
 
     [SerializeField] LayerMask[] layerMask;
-    void Start()
+    [SerializeField, Range(0f,1f)] float turnAmount;
+    void Awake()
     {
         trajectory = GetComponent<Trajectory>();
     }
 
     RaycastHit hit;
     Vector3 exitPos;
+    Quaternion shooterExitRotation;
     Vector3 Velocity;
     bool drag = false;
     bool shoot = false;
@@ -35,12 +41,20 @@ public class Shoot : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+        wire.SetPosition(1, wireGrab1.transform.position);
+        wire.SetPosition(2, wireGrab2.transform.position);
+        wire.SetPosition(3, wireGrab3.transform.position);
+        wire.SetPosition(0, end1.position);
+        wire.SetPosition(4, end2.position);
+
         if (Input.GetMouseButton(0))
         {
+            //Hit the hitbox
             if (Physics.Raycast(ray, 5, layerMask[0]))
             {
                 drag = true;
             }
+            //Dragging the object
             if (Physics.Raycast(ray, out hit, 5, layerMask[1]) && drag)
             {
                 shoot = true;
@@ -49,18 +63,18 @@ public class Shoot : MonoBehaviour
 
                 point.gameObject.SetActive(true);
                 point.transform.position = hit.point;
+                // Get the vector between the ball and the middle of the shooter
+
                 Velocity = (shootPoint.position - point.transform.position) * 20f;
-                Velocity.y = Mathf.Clamp(Velocity.y, 1, float.MaxValue);
+                Velocity.y = Mathf.Clamp(Velocity.y, 1, float.MaxValue); 
+                // Up the y component to hit upper areas easier
                 Velocity.y = Mathf.Pow(Velocity.y, 1.3f);
 
                 trajectory.lineRenderer.enabled = true;
                 trajectory.PredictTrajectory(Velocity, shootPoint.position, 65);
 
-                wire.SetPosition(1, wireGrab1.transform.position);
-                wire.SetPosition(2, wireGrab2.transform.position);
-                wire.SetPosition(3, wireGrab3.transform.position);
 
-
+                shooter.rotation = Quaternion.LookRotation(Vector3.Lerp((shootPoint.position - point.transform.position), Vector3.forward, turnAmount), point.transform.up);
             }
         }
         else if (Input.GetMouseButtonUp(0) && shoot)
@@ -69,6 +83,7 @@ public class Shoot : MonoBehaviour
             drag = false;
             //trajectory.hitMarker.gameObject.SetActive(false);
             trajectory.lineRenderer.enabled = false;
+            shooterExitRotation = shooter.rotation;
             exitPos = point.transform.position;
             StartCoroutine(Slerp());
         }
@@ -96,14 +111,14 @@ public class Shoot : MonoBehaviour
 
             t = elapsedTime / targetTime;
             t = Mathf.Clamp01(t);
-            easedT = 1f - Mathf.Sqrt(1f - Mathf.Pow(t, 2));
+            easedT = 1f - Mathf.Sqrt(1f - Mathf.Pow(t, 2)); // A circle like easing function
 
             point.transform.position = Vector3.Lerp(exitPos, shootPoint.position, easedT);
+            shooter.rotation = Quaternion.Lerp(shooterExitRotation, Quaternion.identity, easedT);
 
-            wire.SetPosition(1, wireGrab1.transform.position);
-            wire.SetPosition(2, wireGrab2.transform.position);
-            wire.SetPosition(3, wireGrab3.transform.position);
 
+            //Prefire the ball so that the transition
+            //between the fake ball and the new ball is more seamless
             if (t > 0.9f && a)
             {
                 ball.GetComponent<Rigidbody>().useGravity = true;
@@ -116,10 +131,8 @@ public class Shoot : MonoBehaviour
 
             yield return null; 
         }
-
+        // Ensure that the objects return to their defualt state
+        shooter.rotation = Quaternion.identity;
         point.transform.position = shootPoint.position;
-        wire.SetPosition(1, wireGrab1.transform.position);
-        wire.SetPosition(2, wireGrab2.transform.position);
-        wire.SetPosition(3, wireGrab3.transform.position);
     }
 }
