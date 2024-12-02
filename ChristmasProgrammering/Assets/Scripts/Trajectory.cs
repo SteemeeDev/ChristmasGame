@@ -5,6 +5,8 @@ using UnityEngine.Timeline;
 
 public class Trajectory : MonoBehaviour
 {
+    [SerializeField] LayerMask[] hitLayers;
+
     public LineRenderer lineRenderer;
     public Transform hitMarker;
 
@@ -19,7 +21,13 @@ public class Trajectory : MonoBehaviour
             velocity = CalculateNewVelocity(velocity, 0.03f);
             Vector3 nextPosition = position + velocity * 0.03f;
 
-            if (Physics.Raycast(position, nextPosition, out hit, (nextPosition-position).magnitude))
+            if (Physics.Raycast(position, nextPosition, out hit, (nextPosition-position).magnitude, hitLayers[0]))
+            {
+                MoveHitMarker(hit);
+                break;
+            }
+
+            if (Physics.Raycast(position, nextPosition, out hit, (nextPosition - position).magnitude, hitLayers[1]))
             {
                 MoveHitMarker(hit);
                 break;

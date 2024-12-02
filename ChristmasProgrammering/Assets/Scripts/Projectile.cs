@@ -5,28 +5,28 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] GameObject breakEffect;
+    public AudioSource hitSound;
 
     GameObject particle;
     float elapsedTime = 0;
-    private void Start()
-    {
-    }
     void Update()
     {
         elapsedTime += Time.deltaTime;
 
-        if (elapsedTime > 5f || particle != null && particle.GetComponent<ParticleSystem>().isStopped)
+        if (elapsedTime > 5f )
         {
             Destroy(gameObject);
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        particle = Instantiate(breakEffect, transform);
-        particle.transform.position = collision.GetContact(0).point;
+        particle = Instantiate(breakEffect);
+        particle.transform.position = other.ClosestPoint(transform.position);
         particle.transform.rotation = Quaternion.Euler(new Vector3(-90, 0 ,0));
 
-        gameObject.GetComponent<MeshRenderer>().enabled = false;
+        hitSound.GetComponent<PlayRandom>().m_PlayRandom();
+
+        Destroy(gameObject);
     }
 }
