@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 490baaab8bc179d40acdf54f4916df69, type: 3}
   m_Name: Wave 1
   m_EditorClassIdentifier: 
-  totalTimeToBeat: 120
+  totalTimeToBeat: 100
   enemies:
   - enemyPrefab: {fileID: 8420254120077921630, guid: fae438d9ce66d5440838a75cfe68f01f, type: 3}
     waitTime: 0
@@ -22,7 +22,7 @@ MonoBehaviour:
     - 1
     - 1
   - enemyPrefab: {fileID: 8420254120077921630, guid: fae438d9ce66d5440838a75cfe68f01f, type: 3}
-    waitTime: 15
+    waitTime: 8
     count: 10
     timeBetweenSpawns: 3
     spawnRandomness:

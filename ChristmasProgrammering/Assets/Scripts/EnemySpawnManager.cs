@@ -97,7 +97,7 @@ public class EnemySpawnManager : MonoBehaviour
                 //Debug.Log("Spawning enemy: " + enemySpawnInfo.enemyPrefab.name);
                 enemySpawnCount++;
                 elapsedTime = 0;
-                Vector3 spawnPos = new Vector3(Random.Range(-16.5f, 16.5f), 17, 12.5f);
+                Vector3 spawnPos = new Vector3(Random.Range(-16f, 16f), 16.5f, 12.5f);
                 GameObject enemy = Instantiate(enemyInfo.enemyPrefab, spawnPos, Quaternion.identity, spawnParent.transform);
                 enemy.GetComponent<Enemy>().enemySpawnManager = gameObject.GetComponent<EnemySpawnManager>();
                 randomTimeModifier = Random.Range(enemyInfo.spawnRandomness[0], enemyInfo.spawnRandomness[1]);

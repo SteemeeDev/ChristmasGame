@@ -27,6 +27,32 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    IEnumerator turnRed(float fadeSpeed)
+    {
+        float elapsed = 0;
+        float t = 0;
+
+        Color startCol = gameObject.GetComponent<MeshRenderer>().material.color;
+        while (elapsed < fadeSpeed)
+        {
+            elapsed += Time.deltaTime;
+            t = elapsed / fadeSpeed;
+            t = Mathf.Clamp01(t);   
+            gameObject.GetComponent<MeshRenderer>().material.color = Color.red * t;
+            yield return null;
+        }
+        elapsed = fadeSpeed;
+        while (elapsed >= 0.3f)
+        {
+            elapsed -= Time.deltaTime;
+            t = elapsed / fadeSpeed;
+            t = Mathf.Clamp01(t);
+            gameObject.GetComponent<MeshRenderer>().material.color = Color.red * t;
+            yield return null;
+        }
+        gameObject.GetComponent<MeshRenderer>().material.color = startCol;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         // Hit ground
@@ -49,6 +75,7 @@ public class Enemy : MonoBehaviour
         if (other.gameObject.layer == 9)
         {
             health--;
+            StartCoroutine(turnRed(0.2f));
         }
     }
 }
