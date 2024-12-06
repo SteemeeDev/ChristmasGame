@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -11,17 +12,21 @@ public class EnemySpawnManager : MonoBehaviour
     [SerializeField] Wave[] waves;
     [SerializeField] GameObject spawnParent;
     [SerializeField] TMP_Text healthText;
+    [SerializeField] TMP_Text scoreText;
+    [SerializeField] TMP_Text waveText;
     Wave currentWave;
-    int waveIndex = 0;
+    [SerializeField] int waveIndex = 0;
+    [SerializeField] float waveDifficulty = 1;
 
     int totalEnemies = 0;
     public int enemiesKilled = 0;
     public int health = 10;
+    public int score = 0;
 
-    [SerializeField] float waveDifficulty = 1;
+    
     private void Awake()
     {
-        currentWave = waves[0];
+        currentWave = waves[waveIndex];
         foreach (EnemyInfo enemy in currentWave.enemies)
         {
             totalEnemies += enemy.count;
@@ -67,6 +72,7 @@ public class EnemySpawnManager : MonoBehaviour
     }
     IEnumerator spawnNewWave(Wave wave)
     {
+        waveText.text = (waveIndex+1).ToString();
         Debug.Log("Spawning wave " + waveIndex);
         foreach(EnemyInfo enemy in wave.enemies)
         {
@@ -79,7 +85,7 @@ public class EnemySpawnManager : MonoBehaviour
     IEnumerator spawnEnemies(Wave.EnemyInfo enemyInfo)
     {
         int enemySpawnCount = 0;
-        float elapsedTime = 0;
+        float elapsedTime = 9999;
 
         float randomTimeModifier = Random.Range(enemyInfo.spawnRandomness[0], enemyInfo.spawnRandomness[1]);
 
@@ -105,5 +111,11 @@ public class EnemySpawnManager : MonoBehaviour
             yield return null;  
         }
 
+    }
+
+    public void UpdateScore(int addScore)
+    {
+        score += addScore;
+        scoreText.text = score.ToString();
     }
 }

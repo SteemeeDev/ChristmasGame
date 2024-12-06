@@ -17,14 +17,35 @@ MonoBehaviour:
   - enemyPrefab: {fileID: 606122996088566468, guid: 024307148be3b7d4c93bd0a2f766949f, type: 3}
     waitTime: 3
     count: 5
-    timeBetweenSpawns: 12
+    timeBetweenSpawns: 5
     spawnRandomness:
     - 1
     - 1
-  - enemyPrefab: {fileID: 606122996088566468, guid: 024307148be3b7d4c93bd0a2f766949f, type: 3}
-    waitTime: 3
+  - enemyPrefab: {fileID: 915321710089708109, guid: d95adb748d2afda449b30dd45953056b, type: 3}
+    waitTime: 4
     count: 5
-    timeBetweenSpawns: 12
+    timeBetweenSpawns: 8
     spawnRandomness:
     - 1
     - 1
+  - enemyPrefab: {fileID: 8420254120077921630, guid: fae438d9ce66d5440838a75cfe68f01f, type: 3}
+    waitTime: 1
+    count: 5
+    timeBetweenSpawns: 3
+    spawnRandomness:
+    - 0.5
+    - 1.3
+  - enemyPrefab: {fileID: 606122996088566468, guid: 024307148be3b7d4c93bd0a2f766949f, type: 3}
+    waitTime: 1
+    count: 2
+    timeBetweenSpawns: 4
+    spawnRandomness:
+    - 0.5
+    - 1.3
+  - enemyPrefab: {fileID: 8420254120077921630, guid: fae438d9ce66d5440838a75cfe68f01f, type: 3}
+    waitTime: 1
+    count: 8
+    timeBetweenSpawns: 4
+    spawnRandomness:
+    - 0.5
+    - 1.3

@@ -120,4 +120,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fallSpeed: 0.8
   health: 1
+  rewardPoints: 1
   enemySpawnManager: {fileID: 0}

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] float fallSpeed;
     [SerializeField] public int health;
+    [SerializeField] int rewardPoints;
     public EnemySpawnManager enemySpawnManager;
 
     void Update()
@@ -14,16 +16,18 @@ public class Enemy : MonoBehaviour
         if (health <= 0)
         {
             Debug.Log("Enemy down!");
-            // TODO: Point up
-            Destroy(gameObject);
+
             try
             {
                 enemySpawnManager.enemiesKilled++;
+                enemySpawnManager.UpdateScore(rewardPoints);
             }
             catch
             {
                 Debug.Log("Spawnmanager not assigned!");
             }
+
+            Destroy(gameObject);
         }
     }
 
@@ -37,17 +41,17 @@ public class Enemy : MonoBehaviour
         {
             elapsed += Time.deltaTime;
             t = elapsed / fadeSpeed;
-            t = Mathf.Clamp01(t);   
-            gameObject.GetComponent<MeshRenderer>().material.color = Color.red * t;
+            t = Mathf.Clamp01(t);
+            gameObject.GetComponent<MeshRenderer>().material.color = Color.Lerp(startCol, Color.red, t);
             yield return null;
         }
         elapsed = fadeSpeed;
-        while (elapsed >= 0.3f)
+        while (elapsed >= 0f)
         {
             elapsed -= Time.deltaTime;
             t = elapsed / fadeSpeed;
             t = Mathf.Clamp01(t);
-            gameObject.GetComponent<MeshRenderer>().material.color = Color.red * t;
+            gameObject.GetComponent<MeshRenderer>().material.color = Color.Lerp(startCol, Color.red, t);
             yield return null;
         }
         gameObject.GetComponent<MeshRenderer>().material.color = startCol;
@@ -75,7 +79,7 @@ public class Enemy : MonoBehaviour
         if (other.gameObject.layer == 9)
         {
             health--;
-            StartCoroutine(turnRed(0.2f));
+            StartCoroutine(turnRed(0.1f));
         }
     }
 }

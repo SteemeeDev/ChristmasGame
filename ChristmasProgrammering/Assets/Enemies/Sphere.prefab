@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 60390fe77fabb2843bb005110556febf, type: 2}
+  - {fileID: 2100000, guid: 4f50cd4caad578f4a94aadbe5343d920, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718f57d5762f264418e4a3bb0bc32147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallSpeed: 0.3
+  fallSpeed: 0.5
   health: 3
+  rewardPoints: 5
   enemySpawnManager: {fileID: 0}
