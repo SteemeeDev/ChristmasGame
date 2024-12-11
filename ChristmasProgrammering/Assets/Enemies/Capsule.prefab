@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718f57d5762f264418e4a3bb0bc32147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallSpeed: 1.7
+  fallSpeed: 1.5
   health: 1
   rewardPoints: 3
   enemySpawnManager: {fileID: 0}

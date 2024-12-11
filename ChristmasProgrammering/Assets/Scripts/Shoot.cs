@@ -119,6 +119,7 @@ public class Shoot : MonoBehaviour
         GameObject ball = Instantiate(ballPrefab);
         ball.transform.position = shootPoint.position;
         ball.GetComponent<Rigidbody>().useGravity = false;
+        ball.GetComponent<Rigidbody>().isKinematic = false;
         ball.GetComponent<Projectile>().hitSound = hitSound;
 
         bool prefire = true;
@@ -146,6 +147,7 @@ public class Shoot : MonoBehaviour
                 point.SetActive(false);
                 ball.GetComponent<MeshRenderer>().enabled = true;
                 ball.transform.position = shootPoint.position;
+                ball.GetComponent<Rigidbody>().isKinematic = false;
                 ball.GetComponent<Rigidbody>().velocity = Velocity;
             }
 

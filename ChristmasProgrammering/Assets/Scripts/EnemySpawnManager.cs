@@ -5,12 +5,19 @@ using System.Security.Cryptography;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static Wave;
 
 public class EnemySpawnManager : MonoBehaviour
 {
     [SerializeField] Wave[] waves;
     [SerializeField] GameObject spawnParent;
+    [SerializeField] GameObject slingshot;
+
+    [SerializeField] GameObject deathMenu;
+    [SerializeField] TMP_Text deathScore;
+    [SerializeField] GameObject mainMenu;
+
     [SerializeField] TMP_Text healthText;
     [SerializeField] TMP_Text scoreText;
     [SerializeField] TMP_Text waveText;
@@ -35,8 +42,22 @@ public class EnemySpawnManager : MonoBehaviour
         StartCoroutine(spawnNewWave(currentWave));
     }
     float GlobalElapsedTime = 0;
+
+    public void Reset()
+    {
+        SceneManager.LoadScene(0);
+    }
     private void Update()
     {
+        if (health <= 0)
+        {
+            slingshot.SetActive(false);
+            deathMenu.SetActive(true);
+            mainMenu.SetActive(false);
+            deathScore.text = score.ToString();
+        }
+
+
         healthText.text = health.ToString();
         GlobalElapsedTime += Time.deltaTime;
         if ((GlobalElapsedTime > currentWave.totalTimeToBeat || enemiesKilled >= totalEnemies) && waveIndex < waves.Length)
